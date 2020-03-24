@@ -47,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var oneLiner = "Full Stack Developer";
   var skills = ["NodeJS", "Rust", "Haskell", "UML Diagramming", "Kotlin", "Python"];
   var exp = ["Started Google", "Developed C#", "Ran a company that made \$8 Billion.", "Graduated from MIT with a doctorate in CS"];
+  var industries = ["Manufacturing", "iOS Programming", "Cybersecurity"];
   var mainFont = 'Montserrat';
   var mainColor = Color(0xbbf7c9aa);
   var mainColorAccent = Color(0xfff7c9aa);
@@ -55,6 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var showExpShadow = true;
   var showTagShadow = true;
   ValueNotifier<bool> showExperienceCard = ValueNotifier(false);
+  ValueNotifier<bool> showIndustriesCard = ValueNotifier(false);
   var glowColor = Colors.blue;
   var shadowGray = Colors.grey[400];
   var mainEdgeInsets = 12.0;
@@ -126,12 +128,116 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void toggleExpCard() {
+  Widget coloredBox(List<String> vars, String title, Color backgroundColor, Color borderColor, ValueNotifier<bool> listenerVar) {
+    return Container(
+        margin: EdgeInsets.only(left: 0.0, right: 0.0, top: 6.0, bottom: 6.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: backgroundColor,
+          border: Border.all(
+            color: borderColor,
+            width: 3,
+          ),
+          boxShadow: <BoxShadow>[
+            if (showExpShadow) BoxShadow(
+                color: shadowGray,
+                blurRadius: 24.0,
+                spreadRadius: 3.0
+            )
+          ],
+
+        ),
+        child: Column(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.all(4.0),
+                  child: Row(
+                      children: <Widget>[
+                        Text(
+                            title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: mainFont,
+                              fontSize: 20.0,
+                            )
+                        ),
+                        Expanded(
+                            child: new Container(
+                              margin: EdgeInsets.only(left: 10.0, top: 2.0, right: 10.0),
+                              child: Divider(
+                                color: Colors.black,
+                                height: 26,
+                              ),
+                            )
+                        ),
+                        Container(
+                            width: 40.0,
+                            height: 26.0,
+                            child: OutlineButton(
+                                child: listenerVar.value ? Text("-") : Text("+"),
+                                onPressed: () {
+                                  toggleCard(listenerVar);
+                                },
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0))
+                            )
+                        )
+                      ]
+                  )
+
+              ),
+              if (listenerVar.value) Container(
+                padding: EdgeInsets.only(left: 10.0),
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, //This only puts them as far left as the longest one is when it's centered.
+                  children: <Widget>[
+                    for (var e in vars) experience(e),
+                  ],
+                ),
+              ),
+              if (listenerVar.value) Container(
+                margin: EdgeInsets.only(left: 12.0, right: 12.0),
+                child: Divider(
+                  color: Colors.black,
+                  height: 26,
+                ),
+              ),
+            ]
+        )
+    );
+  }
+
+  Widget bottomButton(IconData mainIcon, Color backgroundColor) {
+    return Material(
+        elevation: 4.0,
+        shape: CircleBorder(),
+        color: Colors.transparent,
+        clipBehavior: Clip.hardEdge,
+        child: Ink(
+            decoration: ShapeDecoration(
+                color: backgroundColor,
+                shape: CircleBorder(),
+                shadows: [BoxShadow(
+                  color: shadowGray,
+                  blurRadius: 30.0,
+                  spreadRadius: 2.0,
+                )]
+            ),
+            child: IconButton(
+              icon: Icon(mainIcon),
+              color: Colors.white,
+              onPressed: () { passOnCard(); },
+            )
+        )
+    );
+  }
+
+  void toggleCard(ValueNotifier<bool> listenerVar) {
     setState(() {
-      if (showExperienceCard.value) {
-        showExperienceCard.value = false;
+      if (listenerVar.value) {
+        listenerVar.value = false;
       } else {
-        showExperienceCard.value = true;
+        listenerVar.value = true;
       }
     });
   }
@@ -224,14 +330,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ]
                             )
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 16.0),
                         Container(
                           padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                           width: MediaQuery.of(context).size.width * 0.5,
-                          decoration: BoxDecoration(
+                          /*decoration: BoxDecoration(
                             color: mainBGColor,
                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
+                          ),*/
                           child: Column(
                               children: <Widget>[
                                 Row(
@@ -289,80 +395,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
 
                         /*SizedBox(height: 5.0),*/
-                        Container(
-                            margin: EdgeInsets.only(left: 0.0, right: 0.0, top: 6.0, bottom: 6.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: mainColor,
-                              border: Border.all(
-                                color: mainColorAccent,
-                                width: 3,
-                              ),
-                              boxShadow: <BoxShadow>[
-                                if (showExpShadow) BoxShadow(
-                                    color: shadowGray,
-                                    blurRadius: 24.0,
-                                    spreadRadius: 3.0
-                                )
-                              ],
-
-                            ),
-                            child: Column(
-                                children: <Widget>[
-                                  Container(
-                                      margin: EdgeInsets.all(4.0),
-                                      child: Row(
-                                          children: <Widget>[
-                                            Text(
-                                                "Experience",
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: mainFont,
-                                                  fontSize: 20.0,
-                                                )
-                                            ),
-                                            Expanded(
-                                                child: new Container(
-                                                  margin: EdgeInsets.only(left: 10.0, top: 2.0, right: 10.0),
-                                                  child: Divider(
-                                                    color: Colors.black,
-                                                    height: 26,
-                                                  ),
-                                                )
-                                            ),
-                                            Container(
-                                                width: 40.0,
-                                                height: 26.0,
-                                                child: OutlineButton(
-                                                    child: showExperienceCard.value ? Text("-") : Text("+"),
-                                                    onPressed: () {
-                                                      toggleExpCard();
-                                                    },
-                                                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0))
-                                                )
-                                            )
-                                          ]
-                                      )
-
-                                  ),
-                                  if (showExperienceCard.value) Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start, //This only puts them as far left as the longest one is when it's centered.
-                                      children: <Widget>[
-                                        for (var e in exp) experience(e),
-                                      ],
-                                    ),
-                                  ),
-                                  if (showExperienceCard.value) Container(
-                                    margin: EdgeInsets.only(left: 12.0, right: 12.0),
-                                    child: Divider(
-                                      color: Colors.black,
-                                      height: 26,
-                                    ),
-                                  ),
-                                ]
-                            )
-                        ),
+                        coloredBox(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
                         SizedBox(height: 10.0),
                         Container(
                             padding: EdgeInsets.only(left: 0.0, right: 0.0),
@@ -389,7 +422,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           )*/
                                 ]
                             )
-                        )
+                        ),
+                        SizedBox(height: 10.0),
+                        coloredBox(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
                       ],
                     ),
                   ]//),
@@ -415,11 +450,16 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
 
                 Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.86),
+                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.88),
                   padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1, right: MediaQuery.of(context).size.width * 0.1),
                   child: Row(
                     children: <Widget>[
-                      Center(
+                      bottomButton(Icons.autorenew, Colors.red[300]),
+                      /*Material(
+                        elevation: 4.0,
+                        shape: CircleBorder(),
+                        color: Colors.transparent,
+                        clipBehavior: Clip.hardEdge,
                         child: Ink(
                           decoration: ShapeDecoration(
                             color: Colors.red[300],
@@ -436,9 +476,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () { passOnCard(); },
                           )
                         )
-                      ),
+                      ),*/
                       Spacer(),
-                      Center(
+                      bottomButton(Icons.textsms, Colors.blue[300])
+                      /*Center(
                         child: Ink(
                           decoration: ShapeDecoration(
                             color: Colors.blue[300],
@@ -455,7 +496,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () { contactCard(); }
                           )
                         )
-                      )
+                      )*/
                     ],
                   )
                 )

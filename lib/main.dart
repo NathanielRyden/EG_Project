@@ -48,7 +48,10 @@ class _ProfilePageState extends State<ProfilePage> {
   var skills = ["NodeJS", "Rust", "Haskell", "UML Diagramming", "Kotlin", "Python"];
   var exp = ["Started Google", "Developed C#", "Ran a company that made \$8 Billion.", "Graduated from MIT with a doctorate in CS"];
   var industries = ["Manufacturing", "iOS Programming", "Cybersecurity"];
+  var education = ["BS in CS from Harvard", "Masters in Systems Engineering from MIT"];
   var mainFont = 'Montserrat';
+  var backgroundImageURL = 'https://i.pinimg.com/originals/de/6c/93/de6c93815e68c3b00da1d76eb36e25d1.jpg';
+  var profileImageURL = 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg';
   var mainColor = Color(0xbbf7c9aa);
   var mainColorAccent = Color(0xfff7c9aa);
   var secondaryColor = Color(0xbbc58796);
@@ -57,6 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var showTagShadow = true;
   ValueNotifier<bool> showExperienceCard = ValueNotifier(false);
   ValueNotifier<bool> showIndustriesCard = ValueNotifier(false);
+  ValueNotifier<bool> showEducationCard = ValueNotifier(false);
   var glowColor = Colors.blue;
   var shadowGray = Colors.grey[400];
   var mainEdgeInsets = 12.0;
@@ -292,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Container(/*color: Colors.black.withOpacity(0.8)*/
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage('https://media.istockphoto.com/photos/blue-binary-code-picture-id661931620?k=6&m=661931620&s=612x612&w=0&h=jMa-Ba32AFAYJ-99wAQLYk_Po67EmQQZ7h-XoRyWNvY='),
+                    image: NetworkImage(backgroundImageURL),
                     fit: BoxFit.fill,
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(bgOpacity), BlendMode.dstATop),
                   ),
@@ -319,9 +323,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             decoration: BoxDecoration(
                                 color: Colors.red,
                                 image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'
-                                    ),
+                                    image: NetworkImage(profileImageURL),
                                     fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.all(Radius.circular(75.0)),
@@ -425,6 +427,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         SizedBox(height: 10.0),
                         coloredBox(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
+                        coloredBox(education, "Education", mainColor, mainColorAccent, showEducationCard),
+                        SizedBox(height: 100.0),
                       ],
                     ),
                   ]//),

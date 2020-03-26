@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/change_notifier.dart';
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
+//import 'package:flutter/src/foundation/change_notifier.dart';
 
 void main() {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -31,7 +32,7 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => new _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
   var tags = <String>["NodeJS", "Rust", "Haskell", "C++"];
   var name = "Tom Cruise";
   var oneLiner = "Full Stack Developer";
@@ -46,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var mainColorAccent = Color(0xfff7c9aa);
   var secondaryColor = Color(0xbbc58796);
   var secondaryColorAccent = Color(0xffc58796);
-  var showExpShadow = true;
+  var showExpShadow = false;
   var showTagShadow = true;
   ValueNotifier<bool> showExperienceCard = ValueNotifier(false);
   ValueNotifier<bool> showIndustriesCard = ValueNotifier(false);
@@ -122,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget coloredBox(List<String> vars, String title, Color backgroundColor, Color borderColor, ValueNotifier<bool> listenerVar) {
+  Widget coloredBoxClosed(List<String> vars, String title, Color backgroundColor, Color borderColor, ValueNotifier<bool> listenerVar) {
     return Container(
         margin: EdgeInsets.only(left: 0.0, right: 0.0, top: 6.0, bottom: 6.0),
         decoration: BoxDecoration(
@@ -168,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             width: 40.0,
                             height: 26.0,
                             child: OutlineButton(
-                                child: listenerVar.value ? Text("-") : Text("+"),
+                                child: Text("+"),
                                 onPressed: () {
                                   toggleCard(listenerVar);
                                 },
@@ -179,17 +180,79 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
 
               ),
-              if (listenerVar.value) Container(
+            ]
+        )
+    );
+  }
+
+  Widget coloredBoxOpen(List<String> vars, String title, Color backgroundColor, Color borderColor, ValueNotifier<bool> listenerVar) {
+    return Container(
+        margin: EdgeInsets.only(left: 0.0, right: 0.0, top: 6.0, bottom: 6.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: backgroundColor,
+          border: Border.all(
+            color: borderColor,
+            width: 3,
+          ),
+          boxShadow: <BoxShadow>[
+            if (showExpShadow) BoxShadow(
+                color: shadowGray,
+                blurRadius: 24.0,
+                spreadRadius: 3.0
+            )
+          ],
+
+        ),
+        child: Column(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.all(4.0),
+                  child: Row(
+                      children: <Widget>[
+                        Text(
+                            title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: mainFont,
+                              fontSize: 20.0,
+                            )
+                        ),
+                        Expanded(
+                            child: new Container(
+                              margin: EdgeInsets.only(left: 10.0, top: 2.0, right: 10.0),
+                              child: Divider(
+                                color: Colors.black,
+                                height: 26,
+                              ),
+                            )
+                        ),
+                        Container(
+                            width: 40.0,
+                            height: 26.0,
+                            child: OutlineButton(
+                                child: Text("-"),
+                                onPressed: () {
+                                  toggleCard(listenerVar);
+                                },
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(40.0))
+                            )
+                        )
+                      ]
+                  )
+
+              ),
+              Container(
                 padding: EdgeInsets.only(left: 10.0),
                 alignment: Alignment.topLeft,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, //This only puts them as far left as the longest one is when it's centered.
+                  crossAxisAlignment: CrossAxisAlignment.start, ///This only puts them as far left as the longest one is when it's centered.
                   children: <Widget>[
                     for (var e in vars) experience(e),
                   ],
                 ),
               ),
-              if (listenerVar.value) Container(
+              Container(
                 margin: EdgeInsets.only(left: 12.0, right: 12.0),
                 child: Divider(
                   color: Colors.black,
@@ -208,6 +271,8 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Colors.transparent,
         clipBehavior: Clip.antiAlias,
         child: Ink(
+            height: 50.0,
+            width: 50.0,
             decoration: ShapeDecoration(
                 color: backgroundColor,
                 shape: CircleBorder(),
@@ -233,8 +298,8 @@ class _ProfilePageState extends State<ProfilePage> {
         color: Colors.transparent,
         clipBehavior: Clip.antiAlias,
         child: Ink(
-            height: 48.0,
-            width: 48.0,
+            height: 50.0,
+            width: 50.0,
             decoration: ShapeDecoration(
                 color: backgroundColor,
                 shape: CircleBorder(),
@@ -264,6 +329,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Column(
                 children: <Widget>[
                   imageButton('assets/linkedin_uncropped.png', Colors.transparent, navigateToLinkedIn),
+                  SizedBox(height: 2),
                   Text(
                     "LinkedIn",
                     style: TextStyle(
@@ -278,6 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Column(
                 children: <Widget>[
                   bottomButton(Icons.rate_review, Colors.brown[200], showReviews),
+                  SizedBox(height: 2),
                   Text(
                     "Recommendations",
                     style: TextStyle(
@@ -292,6 +359,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Column(
                 children: <Widget>[
                   bottomButton(Icons.collections_bookmark, Colors.cyan, showPortfolio),
+                  SizedBox(height: 2),
                   Text(
                     "Portfolio",
                     style: TextStyle(
@@ -359,14 +427,18 @@ class _ProfilePageState extends State<ProfilePage> {
         body: new Stack(
           children: <Widget>[
             ClipPath(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(backgroundImageURL),
-                    fit: BoxFit.fill,
-                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(bgOpacity), BlendMode.dstATop),
-                  ),
-                )
+              child: AnimatedOpacity(
+                opacity: bgOpacity,
+                duration: Duration(seconds: 0),
+                child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(backgroundImageURL),
+                        fit: BoxFit.fill,
+                        colorFilter: new ColorFilter.mode(Colors.black.withOpacity(bgOpacity), BlendMode.dstATop),
+                      ),
+                    )
+                ),
               ),
               clipper: getClipper(),
             ),
@@ -375,7 +447,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   controller: sController,
                   scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.09, left: mainEdgeInsets, right: mainEdgeInsets),
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.08, left: mainEdgeInsets, right: mainEdgeInsets),
                   children: <Widget>[
                     Column(
                       children: <Widget>[
@@ -447,7 +519,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
 
                         ),
-                        coloredBox(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
+                        AnimatedSizeAndFade(
+                          vsync: this,
+                          child: showExperienceCard.value ? coloredBoxOpen(exp, "Experience", mainColor, mainColorAccent, showExperienceCard) : coloredBoxClosed(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
+                          fadeDuration: const Duration(milliseconds: 300),
+                          sizeDuration: const Duration(milliseconds: 300),
+                        ),
+                        //coloredBox(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
                         SizedBox(height: 10.0),
                         Container(
                             padding: EdgeInsets.only(left: 0.0, right: 0.0),
@@ -474,8 +552,20 @@ class _ProfilePageState extends State<ProfilePage> {
                             )
                         ),
                         SizedBox(height: 10.0),
-                        coloredBox(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
-                        coloredBox(education, "Education", mainColor, mainColorAccent, showEducationCard),
+                        AnimatedSizeAndFade(
+                          vsync: this,
+                          child: showIndustriesCard.value ? coloredBoxOpen(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard) : coloredBoxClosed(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
+                          fadeDuration: const Duration(milliseconds: 300),
+                          sizeDuration: const Duration(milliseconds: 300),
+                        ),
+                        //coloredBox(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
+                        AnimatedSizeAndFade(
+                          vsync: this,
+                          child: showEducationCard.value ? coloredBoxOpen(education, "Education", mainColor, mainColorAccent, showEducationCard) : coloredBoxClosed(education, "Education", mainColor, mainColorAccent, showEducationCard),
+                          fadeDuration: const Duration(milliseconds: 300),
+                          sizeDuration: const Duration(milliseconds: 300),
+                        ),
+                        //coloredBox(education, "Education", mainColor, mainColorAccent, showEducationCard),
                         SizedBox(height: MediaQuery.of(context).size.height * 0.13),
                       ],
                     ),

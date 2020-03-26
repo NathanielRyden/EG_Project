@@ -211,12 +211,12 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget bottomButton(IconData mainIcon, Color backgroundColor) {
+  Widget bottomButton(IconData mainIcon, Color backgroundColor, Function func) {
     return Material(
         elevation: 4.0,
         shape: CircleBorder(),
         color: Colors.transparent,
-        clipBehavior: Clip.hardEdge,
+        clipBehavior: Clip.antiAlias,
         child: Ink(
             decoration: ShapeDecoration(
                 color: backgroundColor,
@@ -230,9 +230,91 @@ class _ProfilePageState extends State<ProfilePage> {
             child: IconButton(
               icon: Icon(mainIcon),
               color: Colors.white,
-              onPressed: () { passOnCard(); },
+              onPressed: () { func(); },
             )
         )
+    );
+  }
+
+  Widget imageButton(String imageUrl, Color backgroundColor, Function func) {
+    return Material(
+        elevation: 4.0,
+        shape: CircleBorder(),
+        color: Colors.transparent,
+        clipBehavior: Clip.antiAlias,
+        child: Ink(
+            height: 48.0,
+            width: 48.0,
+            decoration: ShapeDecoration(
+                color: backgroundColor,
+                shape: CircleBorder(),
+                shadows: [BoxShadow(
+                  color: shadowGray,
+                  blurRadius: 30.0,
+                  spreadRadius: 2.0,
+                )]
+            ),
+            child: FlatButton(
+              child: Image.asset(imageUrl),
+              color: Colors.white,
+              onPressed: () { func(); },
+            )
+        )
+    );
+  }
+
+  Widget deets() {
+    return Center(
+      child: Container(
+          alignment: Alignment(0.0, -0.5),
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: MediaQuery.of(context).size.height * 0.2,
+          child: Row(
+            children: <Widget> [
+              Column(
+                children: <Widget>[
+                  imageButton('assets/linkedin_uncropped.png', Colors.transparent, navigateToLinkedIn),
+                  Text(
+                    "LinkedIn",
+                    style: TextStyle(
+                      fontFamily: mainFont,
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]
+              ),
+              Spacer(),
+              Column(
+                children: <Widget>[
+                  bottomButton(Icons.rate_review, Colors.brown[200], showReviews),
+                  Text(
+                    "Recommendations",
+                    style: TextStyle(
+                      fontFamily: mainFont,
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]
+              ),
+              Spacer(),
+              Column(
+                children: <Widget>[
+                  bottomButton(Icons.collections_bookmark, Colors.cyan, showPortfolio),
+                  Text(
+                    "Portfolio",
+                    style: TextStyle(
+                      fontFamily: mainFont,
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]
+              ),
+            ],
+          )
+      )
     );
   }
 
@@ -247,12 +329,23 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void showDeets() {
-    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return deets();
+      }
+    );
   }
 
-  void contactCard() {}
+  void navigateToLinkedIn() {} /// TODO: Make this bad boi
 
-  void passOnCard() {}
+  void showReviews() {} /// TODO: Make this bad boi
+
+  void showPortfolio() {} /// TODO: Make this bad boi
+
+  void contactCard() {} /// TODO: Make this bad boi
+
+  void passOnCard() {} /// TODO: Make this bad boi
 
   @override
   void initState() {
@@ -471,7 +564,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1, right: MediaQuery.of(context).size.width * 0.1),
                   child: Row(
                     children: <Widget>[
-                      bottomButton(Icons.autorenew, Colors.red[300]),
+                      bottomButton(Icons.autorenew, Colors.red[300], passOnCard),
                       /*Material(
                         elevation: 4.0,
                         shape: CircleBorder(),
@@ -495,7 +588,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         )
                       ),*/
                       Spacer(),
-                      bottomButton(Icons.textsms, Colors.blue[300])
+                      bottomButton(Icons.textsms, Colors.blue[300], contactCard),
                       /*Center(
                         child: Ink(
                           decoration: ShapeDecoration(

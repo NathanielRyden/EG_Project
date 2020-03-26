@@ -14,21 +14,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: ProfilePage(),
@@ -354,9 +344,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void onScroll() {
-    setState(() {
-      //bgOpacity = sController.position.pixels / 110.0;
-    });
+    setState(() {});
   }
 
   @override
@@ -369,28 +357,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Stack(
-          //alignment: Alignment.topCenter,
           children: <Widget>[
-            /*ListView(
-              scrollDirection: Axis.vertical,
-              children: <Widget>[
-                Container(
-                  child: ClipPath(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage('https://media.istockphoto.com/photos/blue-binary-code-picture-id661931620?k=6&m=661931620&s=612x612&w=0&h=jMa-Ba32AFAYJ-99wAQLYk_Po67EmQQZ7h-XoRyWNvY='),
-                            fit: BoxFit.fill,
-                          ),
-                        )
-                    ),
-                    clipper: getClipper(),
-                  ),
-                ),
-              ],
-            ),*/
             ClipPath(
-              child: Container(/*color: Colors.black.withOpacity(0.8)*/
+              child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(backgroundImageURL),
@@ -401,15 +370,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               clipper: getClipper(),
             ),
-            //Positioned(
             new NotificationListener<ScrollUpdateNotification>(
               child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   controller: sController,
                   scrollDirection: Axis.vertical,
-                  //width: MediaQuery.of(context).size.width, //Maybe this is incorrect, that's why it looked funky?
-                  //top: MediaQuery.of(context).size.height / 8,
-                  //child: Column(
                   padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.09, left: mainEdgeInsets, right: mainEdgeInsets),
                   children: <Widget>[
                     Column(
@@ -431,21 +396,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: GestureDetector(
                               onTap: () => showDeets(),
                             ),
-                            /*child: ConstrainedBox(
-                              constraints: BoxConstraints.expand(),
-                              child: FlatButton(
-
-                              )
-                            )*/
                         ),
                         SizedBox(height: 16.0),
                         Container(
                           padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                           width: MediaQuery.of(context).size.width * 0.5,
-                          /*decoration: BoxDecoration(
-                            color: mainBGColor,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),*/
                           child: Column(
                               children: <Widget>[
                                 Row(
@@ -476,15 +431,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ]
                           ),
                         ),
-
-
-                        /*Text(
-                      oneLiner,
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: mainFont),
-                    ),*/
                         SizedBox(height: 5.0),
                         Container(
                           height: (tags.length.toDouble() / 3.0) * 30,
@@ -501,16 +447,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
 
                         ),
-
-                        /*SizedBox(height: 5.0),*/
                         coloredBox(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
                         SizedBox(height: 10.0),
                         Container(
                             padding: EdgeInsets.only(left: 0.0, right: 0.0),
-                            //width: skills.length * 100.0,
                             height: 25.0,
                             child: ListView(
-                              //mainAxisAlignment: MainAxisAlignment.start,
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
                                   Text(
@@ -523,11 +465,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                   SizedBox(width: 5.0),
                                   skillsLine(),
                                   /*Wrap(
-                            runSpacing: 6.0,
-                            children: <Widget>[
-                              for (var i in skills) tagBlockContainer(i, skills, backCol: secondaryColor, borderCol: secondaryColorAccent, textCol: secondaryColorAccent),
-                            ]
-                          )*/
+                                    runSpacing: 6.0,
+                                    children: <Widget>[
+                                      for (var i in skills) tagBlockContainer(i, skills, backCol: secondaryColor, borderCol: secondaryColorAccent, textCol: secondaryColorAccent),
+                                    ]
+                                  )*/
                                 ]
                             )
                         ),
@@ -565,56 +507,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Row(
                     children: <Widget>[
                       bottomButton(Icons.autorenew, Colors.red[300], passOnCard),
-                      /*Material(
-                        elevation: 4.0,
-                        shape: CircleBorder(),
-                        color: Colors.transparent,
-                        clipBehavior: Clip.hardEdge,
-                        child: Ink(
-                          decoration: ShapeDecoration(
-                            color: Colors.red[300],
-                            shape: CircleBorder(),
-                            shadows: [BoxShadow(
-                              color: shadowGray,
-                              blurRadius: 30.0,
-                              spreadRadius: 2.0,
-                            )]
-                          ),
-                          child: IconButton(
-                            icon: Icon(Icons.autorenew),
-                            color: Colors.white,
-                            onPressed: () { passOnCard(); },
-                          )
-                        )
-                      ),*/
                       Spacer(),
                       bottomButton(Icons.textsms, Colors.blue[300], contactCard),
-                      /*Center(
-                        child: Ink(
-                          decoration: ShapeDecoration(
-                            color: Colors.blue[300],
-                            shape: CircleBorder(),
-                            shadows: [BoxShadow(
-                              color: shadowGray,
-                              blurRadius: 30.0,
-                              spreadRadius: 2.0,
-                            )]
-                          ),
-                          child: IconButton(
-                            icon: Icon(Icons.textsms),
-                            color: Colors.white,
-                            onPressed: () { contactCard(); }
-                          )
-                        )
-                      )*/
                     ],
                   )
                 )
 
               ],
             ));
-          //],
-        //));
   }
 }
 
@@ -631,7 +531,6 @@ class getClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
 }

@@ -90,6 +90,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   Widget tagBlockContainer(String tag, List<String> array, {Color backCol = Colors.white, Color borderCol = Colors.grey, Color textCol = Colors.grey}) {
     return Container(
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           tagBlock(tag, backCol: backCol, borderCol: borderCol, textCol: textCol),
           if (tag != array[array.length - 1]) SizedBox(width: 5.0)
@@ -559,30 +560,15 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                         ),
                         SizedBox(height: 2),
                         Container(
-                            padding: EdgeInsets.only(left: 0.0, right: 0.0),
-                            height: 25.0,
-                            child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: <Widget>[
-                                  SizedBox(width: 5.0),
-                                  skillsLine(),
-                                  /*Wrap(
-                                    runSpacing: 6.0,
-                                    children: <Widget>[
-                                      for (var i in skills) tagBlockContainer(i, skills, backCol: secondaryColor, borderCol: secondaryColorAccent, textCol: secondaryColorAccent),
-                                    ]
-                                  )*/
-                                ]
-                            )
-                        ),
-                        /*Container(
                           child: Wrap(
-                            direction: Axis.horizontal,
-                            children: [
-                              for (var item in skills) tagBlockContainer(item, skills, backCol: secondaryColor, borderCol: secondaryColorAccent, textCol: Colors.black),
-                            ]
+                            children: skills.map((skill) {
+                              return Container(
+                                padding: EdgeInsets.only(bottom: 5),
+                                child: tagBlockContainer(skill, skills, backCol: Colors.transparent, borderCol: Colors.grey, textCol: Colors.grey,),
+                              );
+                            }).toList(),
                           )
-                        ),*/
+                        ),
                         SizedBox(height: 10.0),
                         AnimatedSizeAndFade(
                           vsync: this,

@@ -33,7 +33,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
-  var tags = <String>["NodeJS", "Rust", "Haskell", "C++"];
+  //var tags = <String>["NodeJS", "Rust", "Haskell", "C++"];
+  var tags = ["Hard Working", "Self Starter", "Team Builder"];
   var name = "Tom Cruise";
   var oneLiner = "Full Stack Developer";
   var skills = ["NodeJS", "Rust", "Haskell", "UML Diagramming", "Kotlin", "Python"];
@@ -153,7 +154,8 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: mainFont,
-                              fontSize: 20.0,
+                              fontSize: 18.0,
+                              color: Colors.lightBlue,
                             )
                         ),
                         Expanded(
@@ -215,7 +217,8 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: mainFont,
-                              fontSize: 20.0,
+                              fontSize: 18.0,
+                              color: Colors.lightBlue,
                             )
                         ),
                         Expanded(
@@ -452,8 +455,8 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     Column(
                       children: <Widget>[
                         Container(
-                            width: 150.0,
-                            height: 150.0,
+                            width: MediaQuery.of(context).size.width * 0.32,
+                            height: MediaQuery.of(context).size.width * 0.32,
                             decoration: BoxDecoration(
                                 color: Colors.red,
                                 image: DecorationImage(
@@ -488,7 +491,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                                     ]
                                 ),
                                 SizedBox(height: 0.0),
-                                Row(
+                                /*Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       Text(
@@ -499,47 +502,68 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                                             fontFamily: mainFont),
                                       ),
                                     ]
-                                ),
+                                ),*/
                               ]
                           ),
                         ),
                         SizedBox(height: 5.0),
                         Container(
-                          height: (tags.length.toDouble() / 3.0) * 30,
+                          height: 20,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Wrap(
+                              Wrap( ///Maybe at a later date get rid of this wrap and make it work better.
                                 direction: Axis.horizontal,
                                 children: <Widget>[
-                                  for (var tag in tags) tagBlockContainer(tag, tags),
+                                  for (var tag in tags) Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                          tag
+                                        ),
+                                        SizedBox(width: 5),
+                                        if (tag != tags.last) Container(
+                                          height: 18,
+                                          child: VerticalDivider(color: Colors.black),
+                                        ),
+                                        SizedBox(width: 5),
+                                      ]
+                                    )
+                                  )
                                 ],
                               ),
                             ],
                           ),
 
                         ),
+                        SizedBox(height: 20),
                         AnimatedSizeAndFade(
                           vsync: this,
-                          child: showExperienceCard.value ? coloredBoxOpen(exp, "Experience", mainColor, mainColorAccent, showExperienceCard) : coloredBoxClosed(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
+                          child: showExperienceCard.value ? coloredBoxOpen(exp, "Experience", Colors.transparent, Colors.transparent, showExperienceCard) : coloredBoxClosed(exp, "Experience", Colors.transparent, Colors.transparent, showExperienceCard),
                           fadeDuration: const Duration(milliseconds: 300),
                           sizeDuration: const Duration(milliseconds: 300),
                         ),
                         //coloredBox(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
                         SizedBox(height: 10.0),
                         Container(
+                          alignment: Alignment(-1.0, -1.0),
+                          padding: EdgeInsets.only(left: 5),
+                          child: Text(
+                            "Skills",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.lightBlue,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Container(
                             padding: EdgeInsets.only(left: 0.0, right: 0.0),
                             height: 25.0,
                             child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: <Widget>[
-                                  Text(
-                                    "Skills",
-                                    style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
                                   SizedBox(width: 5.0),
                                   skillsLine(),
                                   /*Wrap(
@@ -551,17 +575,25 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                                 ]
                             )
                         ),
+                        /*Container(
+                          child: Wrap(
+                            direction: Axis.horizontal,
+                            children: [
+                              for (var item in skills) tagBlockContainer(item, skills, backCol: secondaryColor, borderCol: secondaryColorAccent, textCol: Colors.black),
+                            ]
+                          )
+                        ),*/
                         SizedBox(height: 10.0),
                         AnimatedSizeAndFade(
                           vsync: this,
-                          child: showIndustriesCard.value ? coloredBoxOpen(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard) : coloredBoxClosed(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
+                          child: showIndustriesCard.value ? coloredBoxOpen(industries, "Industries", Colors.transparent, Colors.transparent, showIndustriesCard) : coloredBoxClosed(industries, "Industries", Colors.transparent, Colors.transparent, showIndustriesCard),
                           fadeDuration: const Duration(milliseconds: 300),
                           sizeDuration: const Duration(milliseconds: 300),
                         ),
                         //coloredBox(industries, "Industries", secondaryColor, secondaryColorAccent, showIndustriesCard),
                         AnimatedSizeAndFade(
                           vsync: this,
-                          child: showEducationCard.value ? coloredBoxOpen(education, "Education", mainColor, mainColorAccent, showEducationCard) : coloredBoxClosed(education, "Education", mainColor, mainColorAccent, showEducationCard),
+                          child: showEducationCard.value ? coloredBoxOpen(education, "Education", Colors.transparent, Colors.transparent, showEducationCard) : coloredBoxClosed(education, "Education", Colors.transparent, Colors.transparent, showEducationCard),
                           fadeDuration: const Duration(milliseconds: 300),
                           sizeDuration: const Duration(milliseconds: 300),
                         ),
@@ -613,7 +645,7 @@ class getClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = new Path();
 
-    path.lineTo(0.0, size.height / 3.6);
+    path.lineTo(0.0, size.height / 4);
     path.lineTo(size.width + 225, 0.0);
     path.close();
     return path;

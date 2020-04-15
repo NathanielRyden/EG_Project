@@ -268,6 +268,70 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     );
   }
 
+  Widget coloredBox(List<String> vars, String title) {
+    return Container(
+        margin: EdgeInsets.only(left: 0.0, right: 0.0, top: 6.0, bottom: 6.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.transparent,
+          boxShadow: <BoxShadow>[
+            if (showExpShadow) BoxShadow(
+                color: shadowGray,
+                blurRadius: 24.0,
+                spreadRadius: 3.0
+            )
+          ],
+        ),
+        child: Column(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.all(4.0),
+                  child: Row(
+                      children: <Widget>[
+                        Text(
+                            title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: mainFont,
+                              fontSize: 18.0,
+                              color: Colors.lightBlue,
+                            )
+                        ),
+                        /*Expanded(
+                            child: new Container(
+                              margin: EdgeInsets.only(left: 10.0, top: 2.0, right: 10.0),
+                              child: Divider(
+                                color: Colors.black,
+                                height: 26,
+                              ),
+                            )
+                        ),*/
+                      ]
+                  )
+
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 10.0),
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, ///This only puts them as far left as the longest one is when it's centered.
+                  children: <Widget>[
+                    for (var e in vars) experience(e),
+                  ],
+                ),
+              ),
+              /*Container(
+                margin: EdgeInsets.only(left: 12.0, right: 12.0),
+                child: Divider(
+                  color: Colors.black,
+                  height: 26,
+                ),
+              ),*/
+            ]
+        )
+    );
+  }
+
   Widget bottomButton(IconData mainIcon, Color backgroundColor, Function func) {
     return Material(
         elevation: 4.0,
@@ -492,18 +556,6 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                                     ]
                                 ),
                                 SizedBox(height: 0.0),
-                                /*Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        oneLiner,
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontStyle: FontStyle.italic,
-                                            fontFamily: mainFont),
-                                      ),
-                                    ]
-                                ),*/
                               ]
                           ),
                         ),
@@ -535,17 +587,10 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                               ),
                             ],
                           ),
-
                         ),
                         SizedBox(height: 20),
-                        AnimatedSizeAndFade(
-                          vsync: this,
-                          child: showExperienceCard.value ? coloredBoxOpen(exp, "Experience", Colors.transparent, Colors.transparent, showExperienceCard) : coloredBoxClosed(exp, "Experience", Colors.transparent, Colors.transparent, showExperienceCard),
-                          fadeDuration: const Duration(milliseconds: 300),
-                          sizeDuration: const Duration(milliseconds: 300),
-                        ),
-                        //coloredBox(exp, "Experience", mainColor, mainColorAccent, showExperienceCard),
-                        SizedBox(height: 10.0),
+                        coloredBox(exp, "Experience"),
+                        SizedBox(height: 36.0),
                         Container(
                           alignment: Alignment(-1.0, -1.0),
                           padding: EdgeInsets.only(left: 5),
@@ -569,8 +614,8 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                             }).toList(),
                           )
                         ),
-                        SizedBox(height: 10.0),
-                        AnimatedSizeAndFade(
+                        SizedBox(height: 30.0),
+                        /*AnimatedSizeAndFade(
                           vsync: this,
                           child: showIndustriesCard.value ? coloredBoxOpen(industries, "Industries", Colors.transparent, Colors.transparent, showIndustriesCard) : coloredBoxClosed(industries, "Industries", Colors.transparent, Colors.transparent, showIndustriesCard),
                           fadeDuration: const Duration(milliseconds: 300),
@@ -582,8 +627,10 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           child: showEducationCard.value ? coloredBoxOpen(education, "Education", Colors.transparent, Colors.transparent, showEducationCard) : coloredBoxClosed(education, "Education", Colors.transparent, Colors.transparent, showEducationCard),
                           fadeDuration: const Duration(milliseconds: 300),
                           sizeDuration: const Duration(milliseconds: 300),
-                        ),
+                        ),*/
                         //coloredBox(education, "Education", mainColor, mainColorAccent, showEducationCard),
+                        coloredBox(industries, "Industries"),
+                        coloredBox(education, "Education"),
                         SizedBox(height: MediaQuery.of(context).size.height * 0.13),
                       ],
                     ),
